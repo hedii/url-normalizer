@@ -19,5 +19,8 @@
         "psr-4": {
             "Hedii\\UrlNormalizer\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }
