@@ -46,10 +46,7 @@ class YoutubeUrlNormalizer implements UrlNormalizerInterface
         }
 
         if (string_starts_with($uri->getPath(), '/shared') && $uri->query->hasKey('ci')) {
-            return HttpUri::createFromString('https://www.youtube.com')
-                ->withPath('/watch')
-                ->withQuery("v={$uri->query->getValue('ci')}")
-                ->__toString();
+            return $uri->__toString();
         }
 
         throw new BadUrlException("L'url fournie ({$uri->__toString()}) ne peut pas être normalisée.");

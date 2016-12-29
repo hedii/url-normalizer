@@ -123,9 +123,6 @@ class YoutubeUrlNormalizerTest extends TestCase
     function test_it_should_normalize_shared()
     {
         $url = 'https://www.youtube.com/shared?ci=5cFnziL4ufY';
-        $this->assertEquals('https://www.youtube.com/watch?v=5cFnziL4ufY', UrlNormalizer::normalize($url));
-
-        $url = 'https://www.youtube.com/shared?ci=5cFnziL4ufY&key=value';
-        $this->assertEquals('https://www.youtube.com/watch?v=5cFnziL4ufY', UrlNormalizer::normalize($url));
+        $this->assertEquals('https://www.youtube.com/shared?ci=5cFnziL4ufY', UrlNormalizer::normalize($url));
     }
 }
