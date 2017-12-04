@@ -1,17 +1,17 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hedii\UrlNormalizer;
 
-use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Http;
 
 interface UrlNormalizerInterface
 {
     /**
      * Normalize a given http uri.
      *
-     * @param \League\Uri\Schemes\Http $uri
+     * @param \League\Uri\Http $uri
      * @return string
      */
-    public static function normalize(HttpUri $uri): string;
+    public static function normalize(Http $uri): string;
 }

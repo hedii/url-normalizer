@@ -1,54 +1,55 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hedii\UrlNormalizer;
 
 use Hedii\UrlNormalizer\Exceptions\BadUrlException;
-use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Components\HierarchicalPath;
+use League\Uri\Components\Query;
+use League\Uri\Http;
 
 class YoutubeUrlNormalizer implements UrlNormalizerInterface
 {
     /**
      * Normalize a given http uri.
      *
-     * @param \League\Uri\Schemes\Http $uri
+     * @param \League\Uri\Http $uri
      * @return string
      * @throws \Hedii\UrlNormalizer\Exceptions\BadUrlException
      */
-    public static function normalize(HttpUri $uri): string
+    public static function normalize(Http $uri): string
     {
-        if ($uri->host->getRegisterableDomain() == 'youtu.be') {
-            return HttpUri::createFromString('https://www.youtube.com')
+        $path = new HierarchicalPath($uri->getPath());
+        $query = new Query($uri->getQuery());
+
+        if ($uri->getHost() === 'youtu.be') {
+            return (string) Http::createFromString('https://www.youtube.com')
                 ->withPath('/watch')
-                ->withQuery("v={$uri->path->withoutLeadingSlash()->__toString()}")
-                ->__toString();
+                ->withQuery("v={$path->withoutLeadingSlash()}");
         }
 
-        if ($uri->query->hasKey('v')) {
-            return HttpUri::createFromString('https://www.youtube.com')
+        if ($query->hasPair('v')) {
+            return (string) Http::createFromString('https://www.youtube.com')
                 ->withPath('/watch')
-                ->withQuery("v={$uri->query->getValue('v')}")
-                ->__toString();
+                ->withQuery("v={$query->getPair('v')}");
         }
 
-        if ($uri->query->hasKey('list')) {
-            return HttpUri::createFromString('https://www.youtube.com')
+        if ($query->hasPair('list')) {
+            return (string) Http::createFromString('https://www.youtube.com')
                 ->withPath('/playlist')
-                ->withQuery("list={$uri->query->getValue('list')}")
-                ->__toString();
+                ->withQuery("list={$query->getPair('list')}");
         }
 
         if (string_starts_with($uri->getPath(), '/embed/')) {
-            return HttpUri::createFromString('https://www.youtube.com')
+            return (string) Http::createFromString('https://www.youtube.com')
                 ->withPath('/watch')
-                ->withQuery("v={$uri->path->getBasename()}")
-                ->__toString();
+                ->withQuery("v={$path->getBasename()}");
         }
 
-        if (string_starts_with($uri->getPath(), '/shared') && $uri->query->hasKey('ci')) {
-            return $uri->__toString();
+        if (string_starts_with($uri->getPath(), '/shared') && $query->hasPair('ci')) {
+            return (string) $uri;
         }
 
-        throw new BadUrlException("L'url fournie ({$uri->__toString()}) ne peut pas être normalisée.");
+        throw new BadUrlException("L'url fournie ({$uri}) ne peut pas être normalisée.");
     }
 }

@@ -1,22 +1,23 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hedii\UrlNormalizer;
 
-use League\Uri\Schemes\Http as HttpUri;
+use League\Uri\Components\HierarchicalPath;
+use League\Uri\Http;
 
 class GenericUrlNormalizer implements UrlNormalizerInterface
 {
     /**
      * Normalize a given http uri.
      *
-     * @param \League\Uri\Schemes\Http $uri
+     * @param \League\Uri\Http $uri
      * @return string
      */
-    public static function normalize(HttpUri $uri): string
+    public static function normalize(Http $uri): string
     {
-        return $uri->withPath(
-            $uri->path->withoutTrailingSlash()->__toString()
-        )->__toString();
+        $path = new HierarchicalPath($uri->getPath());
+
+        return (string) $uri->withPath("{$path->withoutTrailingSlash()}");
     }
 }

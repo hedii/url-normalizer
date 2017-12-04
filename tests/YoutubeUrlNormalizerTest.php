@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hedii\UrlNormalizer\Tests;
 
 use Hedii\UrlNormalizer\Exceptions\BadUrlException;
 use Hedii\UrlNormalizer\UrlNormalizer;
+use PHPUnit\Framework\TestCase;
 
 class YoutubeUrlNormalizerTest extends TestCase
 {
