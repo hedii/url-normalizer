@@ -1,7 +1,7 @@
 {
     "name": "hedii/url-normalizer",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1.0",
         "ext-mbstring" : "*",
         "ext-intl" : "*",
         "hedii/helpers": "^1.1",
